@@ -1,0 +1,773 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aurora Glam Studio</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;1,6..96,400;1,6..96,500&family=Jost:wght@300;400;500;600&display=swap">
+<style>
+/* Layout: hero editorial con escaparate 3D a la derecha; secciones en bandas alternas rosa/blanco con rejillas que se apilan en móvil */
+:root{
+  --bg:#FBF3F1; --surface:#FFFFFF; --surface-2:#F5E2DF;
+  --fg:#3A2329; --muted:#85646B; --line:rgba(58,35,41,.12);
+  --rose:#D98E9B; --rose-deep:#A94B60; --nude:#E7C3B0;
+  --gold:#A87A22; --gold-soft:#E3C17A; --on-accent:#FFFFFF;
+  --shadow:0 18px 40px -18px rgba(120,50,65,.35);
+  --font-display:"Bodoni Moda","Didot","Bodoni 72",Georgia,serif;
+  --font-body:"Jost","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --radius:18px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#1C1216; --surface:#26181E; --surface-2:#31202A;
+  --fg:#F7E7E4; --muted:#C4A5AB; --line:rgba(247,231,228,.13);
+  --rose:#E8A3AF; --rose-deep:#F2B8C3; --nude:#D9B19D;
+  --gold:#E6C47E; --gold-soft:#F1D9A0; --on-accent:#2A161C;
+  --shadow:0 18px 40px -18px rgba(0,0,0,.7); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#1C1216; --surface:#26181E; --surface-2:#31202A;
+  --fg:#F7E7E4; --muted:#C4A5AB; --line:rgba(247,231,228,.13);
+  --rose:#E8A3AF; --rose-deep:#F2B8C3; --nude:#D9B19D;
+  --gold:#E6C47E; --gold-soft:#F1D9A0; --on-accent:#2A161C;
+  --shadow:0 18px 40px -18px rgba(0,0,0,.7); color-scheme:dark}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:17px;line-height:1.65;font-weight:400;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--bg)}
+h1,h2,h3{font-family:var(--font-display);font-weight:400;line-height:1.08;margin:0;text-wrap:balance}
+h2{font-size:clamp(2rem,4.5vw,3.1rem)}
+h3{font-size:1.45rem}
+p{margin:0}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.eyebrow{font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:500}
+.lead{color:var(--muted);max-width:60ch;font-size:1.08rem}
+.section{padding-block:clamp(64px,9vw,112px)}
+.section-head{display:grid;gap:14px;margin-bottom:44px;max-width:720px}
+.band{background:var(--surface-2)}
+em.gold{font-style:italic;color:var(--gold)}
+
+.btn{display:inline-flex;align-items:center;gap:10px;border:0;cursor:pointer;font:500 .95rem/1 var(--font-body);letter-spacing:.06em;text-decoration:none;padding:16px 26px;border-radius:999px;transition:transform .2s,box-shadow .2s,background .2s}
+.btn-primary{background:var(--rose-deep);color:var(--on-accent);box-shadow:var(--shadow)}
+.btn-primary:hover{transform:translateY(-2px)}
+.btn-ghost{background:transparent;color:var(--fg);border:1px solid var(--line)}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+
+/* Nav */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:68px}
+.logo{font-family:var(--font-display);font-size:1.35rem;text-decoration:none;display:flex;align-items:baseline;gap:8px;white-space:nowrap}
+.logo b{font-weight:600;color:var(--gold);font-style:italic}
+.logo small{font-family:var(--font-body);font-size:.66rem;letter-spacing:.28em;text-transform:uppercase;color:var(--muted)}
+.nav-links{display:flex;gap:28px;align-items:center;list-style:none;margin:0;padding:0}
+.nav-links a{text-decoration:none;font-size:.92rem;color:var(--muted)}
+.nav-links a:hover{color:var(--fg)}
+.nav-links .btn{padding:11px 20px;color:var(--on-accent)}
+.menu-btn{display:none;background:none;border:1px solid var(--line);border-radius:12px;width:44px;height:44px;color:var(--fg);cursor:pointer}
+@media (max-width:860px){
+  .menu-btn{display:grid;place-items:center}
+  .nav-links{position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;background:var(--bg);border-bottom:1px solid var(--line);padding:8px max(16px,env(safe-area-inset-right,0px)) 18px max(16px,env(safe-area-inset-left,0px))}
+  .nav-links:not(.open){display:none}
+  .nav-links li a{display:block;padding:12px 0}
+  .nav-links .btn{justify-content:center;margin-top:8px}
+}
+
+/* Hero */
+.hero{position:relative;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(24px,4vw,56px);align-items:center;padding-block:clamp(40px,6vw,72px)}
+.hero-copy{display:grid;gap:22px;min-width:0}
+.hero h1{font-size:clamp(2.7rem,6.4vw,5.2rem);letter-spacing:-.01em}
+.hero h1 em{font-style:italic;color:var(--rose-deep)}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:6px}
+.hero-facts{display:flex;flex-wrap:wrap;gap:28px;margin-top:14px;padding-top:22px;border-top:1px solid var(--line)}
+.hero-facts div{display:grid}
+.hero-facts strong{font-family:var(--font-display);font-size:2rem;font-weight:400;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1.1}
+.hero-facts span{font-size:.82rem;color:var(--muted)}
+.stage{position:relative;aspect-ratio:1/1;max-width:100%;width:100%;max-height:600px;border-radius:50% 50% 24px 24px;background:radial-gradient(60% 45% at 50% 55%,color-mix(in srgb,var(--rose) 45%,transparent),transparent 70%),radial-gradient(40% 12% at 50% 92%,color-mix(in srgb,var(--fg) 14%,transparent),transparent 70%),linear-gradient(180deg,var(--surface-2),var(--bg));cursor:grab;touch-action:pan-y}
+.stage:active{cursor:grabbing}
+.stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.stage-hint{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);background:color-mix(in srgb,var(--bg) 75%,transparent);padding:6px 14px;border-radius:999px;white-space:nowrap;pointer-events:none}
+.stage .fallback{display:none}
+.stage.no-webgl .fallback{display:grid;place-items:center;position:absolute;inset:0;font-family:var(--font-display);font-style:italic;font-size:2rem;color:var(--rose-deep)}
+@media (max-width:860px){
+  .hero .wrap{grid-template-columns:1fr}
+  .stage{max-height:440px;order:-1;border-radius:32px}
+}
+
+/* About */
+.about{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(28px,5vw,72px);align-items:center}
+.portrait{position:relative;aspect-ratio:4/5;max-width:100%;border-radius:200px 200px var(--radius) var(--radius);background:linear-gradient(160deg,var(--rose),var(--nude));overflow:hidden;box-shadow:var(--shadow)}
+.portrait svg{position:absolute;inset:auto 0 0;width:100%;height:92%}
+.portrait-tag{position:absolute;left:18px;bottom:18px;background:var(--surface);color:var(--fg);padding:12px 16px;border-radius:14px;font-size:.85rem;line-height:1.35;box-shadow:var(--shadow);transform:translateZ(40px)}
+.portrait-tag strong{display:block;font-family:var(--font-display);font-size:1.1rem;font-weight:600}
+.about-copy{display:grid;gap:20px;min-width:0}
+.about-copy p{max-width:62ch}
+.creds{display:flex;flex-wrap:wrap;gap:10px;list-style:none;padding:0;margin:6px 0 0}
+.creds li{border:1px solid var(--line);border-radius:999px;padding:8px 14px;font-size:.85rem;color:var(--muted)}
+@media (max-width:860px){.about{grid-template-columns:1fr}.portrait{max-width:420px}}
+
+/* Tilt 3D */
+.tilt{transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .35s cubic-bezier(.2,.7,.2,1);transform-style:preserve-3d;will-change:transform}
+.tilt::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(circle at var(--mx,50%) var(--my,0%),rgba(255,255,255,.35),transparent 45%);opacity:var(--sheen,0);transition:opacity .3s}
+
+/* Gallery */
+.filters{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:30px}
+.filter{border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:999px;padding:10px 18px;font:500 .9rem var(--font-body);cursor:pointer}
+.filter[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.gallery{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
+.look{position:relative;border-radius:var(--radius);background:var(--surface);overflow:hidden;border:1px solid var(--line)}
+.look-art{position:relative;aspect-ratio:4/5;max-width:100%}
+.look-art svg{position:absolute;inset:0;width:100%;height:100%}
+.look-body{padding:16px 18px 18px;display:grid;gap:6px}
+.look-cat{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:500}
+.look h3{font-size:1.2rem}
+.look-shades{font-size:.82rem;color:var(--muted);line-height:1.45}
+.swatches{display:flex;gap:6px;margin-top:4px}
+.swatches i{width:16px;height:16px;border-radius:50%;border:1px solid var(--line);display:block}
+@media (max-width:1000px){.gallery{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:460px){.gallery{grid-template-columns:1fr}}
+
+/* Services */
+.services{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.service{position:relative;display:grid;grid-template-rows:auto auto 1fr auto;gap:12px;padding:28px;border-radius:var(--radius);background:var(--surface);border:1px solid var(--line)}
+.service.featured{background:linear-gradient(160deg,var(--rose-deep),color-mix(in srgb,var(--rose-deep) 60%,var(--gold)));color:var(--on-accent);border-color:transparent;box-shadow:var(--shadow)}
+.service.featured .service-meta,.service.featured li{color:inherit;opacity:.9}
+.service.featured .price{color:inherit}
+.badge{position:absolute;top:18px;right:18px;font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;padding:6px 10px;border-radius:999px;background:var(--surface);color:var(--rose-deep);font-weight:600}
+.service-meta{font-size:.82rem;color:var(--muted);letter-spacing:.04em}
+.service ul{margin:0;padding:0;list-style:none;display:grid;gap:6px;font-size:.92rem;color:var(--muted)}
+.service li::before{content:"✦";color:var(--gold);margin-right:8px;font-size:.75rem}
+.service.featured li::before{color:inherit}
+.price{font-family:var(--font-display);font-size:2rem;color:var(--fg);font-variant-numeric:tabular-nums;display:flex;align-items:baseline;gap:6px;margin-top:6px}
+.price small{font-family:var(--font-body);font-size:.78rem;letter-spacing:.1em;opacity:.75}
+@media (max-width:1000px){.services{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.services{grid-template-columns:1fr}}
+
+/* Testimonials */
+.quotes{position:relative}
+.quote-track{display:grid;grid-auto-flow:column;grid-auto-columns:min(560px,88%);gap:22px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:6px}
+.quote-track::-webkit-scrollbar{display:none}
+.quote{scroll-snap-align:start;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:30px;display:grid;gap:18px;align-content:space-between;min-width:0}
+.quote blockquote{margin:0;font-family:var(--font-display);font-size:1.3rem;line-height:1.4;font-style:italic}
+.quote footer{display:flex;align-items:center;gap:12px;font-size:.9rem}
+.avatar{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-family:var(--font-display);color:var(--on-accent);background:var(--rose-deep)}
+.quote footer span{color:var(--muted);display:block;font-size:.8rem}
+.stars{color:var(--gold);letter-spacing:3px;font-size:.9rem}
+.quote-ctrl{display:flex;gap:10px;margin-top:22px}
+.round{width:48px;height:48px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer;font-size:1.1rem}
+.round:hover{border-color:var(--gold);color:var(--gold)}
+
+/* Booking */
+.booking{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(28px,5vw,64px);align-items:start}
+.contact-list{list-style:none;padding:0;margin:26px 0 0;display:grid;gap:16px}
+.contact-list li{display:grid;gap:2px}
+.contact-list span{font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.contact-list strong{font-weight:500;user-select:all}
+form.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:clamp(22px,3vw,36px);display:grid;grid-template-columns:1fr 1fr;gap:18px;box-shadow:var(--shadow);min-width:0}
+.field{display:grid;gap:6px;min-width:0}
+.field.full{grid-column:1/-1}
+label{font-size:.82rem;font-weight:500;letter-spacing:.04em}
+input,select,textarea{font:inherit;font-size:1rem;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:13px 14px;width:100%;min-width:0}
+textarea{min-height:110px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--gold);outline-offset:1px}
+.error{font-size:.8rem;color:var(--rose-deep);min-height:1em}
+.result{grid-column:1/-1;background:var(--surface-2);border-radius:14px;padding:18px;display:grid;gap:12px}
+.result pre{margin:0;white-space:pre-wrap;font:inherit;font-size:.92rem;color:var(--muted)}
+.result-actions{display:flex;flex-wrap:wrap;gap:10px}
+@media (max-width:860px){.booking{grid-template-columns:1fr}}
+@media (max-width:520px){form.card{grid-template-columns:1fr}}
+
+/* Footer */
+.footer{border-top:1px solid var(--line);padding-block:36px}
+.footer .wrap{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center;font-size:.85rem;color:var(--muted)}
+
+.wa-float{position:fixed;right:calc(18px + env(safe-area-inset-right,0px));bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:40;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:#25D366;color:#fff;box-shadow:0 12px 28px -10px rgba(0,0,0,.45);text-decoration:none}
+.wa-float svg{width:28px;height:28px}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .tilt{transition:none;transform:none!important}
+  .btn{transition:none}
+}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="#inicio">Aurora <b>Glam</b> <small>Studio</small></a>
+    <button class="menu-btn" id="menuBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 6h14M3 10h14M3 14h14"/></svg>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#sobre-mi">Sobre mí</a></li>
+      <li><a href="#galeria">Galería</a></li>
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#testimonios">Testimonios</a></li>
+      <li><a class="btn btn-primary" href="#reservas">Reservar cita</a></li>
+    </ul>
+  </div>
+</header>
+
+<main>
+  <section class="hero" id="inicio">
+    <div class="wrap">
+      <div class="hero-copy">
+        <p class="eyebrow">Maquillaje profesional · Medellín</p>
+        <h1>Belleza que se siente en <em>tres dimensiones</em></h1>
+        <p class="lead">Soy Valentina Ríos, maquilladora para novias, eventos y editoriales. Trabajo cada rostro como una escultura: luz, sombra y color pensados para tu piel y para la cámara.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#reservas">Agenda tu cita</a>
+          <a class="btn btn-ghost" href="#galeria">Ver mis trabajos</a>
+        </div>
+        <div class="hero-facts">
+          <div><strong>9</strong><span>años de experiencia</span></div>
+          <div><strong>320+</strong><span>novias maquilladas</span></div>
+          <div><strong>4,9★</strong><span>en 210 reseñas</span></div>
+        </div>
+      </div>
+      <div class="stage" id="stage" aria-label="Productos de maquillaje en 3D: labial, polvera, base y brocha. Arrastra para girarlos." role="img">
+        <canvas id="scene"></canvas>
+        <div class="fallback">Aurora Glam</div>
+        <span class="stage-hint">Arrastra para girar</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band" id="sobre-mi">
+    <div class="wrap about">
+      <div class="portrait tilt" id="portrait">
+        <span class="portrait-tag"><strong>Valentina Ríos</strong>Maquilladora y docente</span>
+      </div>
+      <div class="about-copy">
+        <p class="eyebrow">Sobre mí</p>
+        <h2>Tu piel primero, <em class="gold">el maquillaje después</em></h2>
+        <p>Empecé maquillando a mis amigas para sus grados y hoy trabajo con novias, fotógrafos y marcas de moda en Medellín y el Eje Cafetero. Antes de tocar una brocha estudio tu tipo de piel, tu subtono y la luz del lugar donde estarás.</p>
+        <p>Uso productos de larga duración y fórmulas aptas para piel sensible. Mi meta es que te veas como tú, en tu mejor versión, y que el maquillaje aguante desde la ceremonia hasta el último baile.</p>
+        <ul class="creds">
+          <li>Certificada en visagismo</li>
+          <li>Maquillaje HD para foto y video</li>
+          <li>Kit higienizado en cada servicio</li>
+          <li>Servicio a domicilio</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="galeria">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Galería</p>
+        <h2>Looks recientes</h2>
+        <p class="lead">Cada look incluye los tonos que usé. Filtra por tipo de servicio.</p>
+      </div>
+      <div class="filters" role="group" aria-label="Filtrar galería">
+        <button class="filter" type="button" data-filter="todos" aria-pressed="true">Todos</button>
+        <button class="filter" type="button" data-filter="novias" aria-pressed="false">Novias</button>
+        <button class="filter" type="button" data-filter="social" aria-pressed="false">Social</button>
+        <button class="filter" type="button" data-filter="editorial" aria-pressed="false">Editorial</button>
+        <button class="filter" type="button" data-filter="artistico" aria-pressed="false">Artístico</button>
+      </div>
+      <div class="gallery" id="gallery"></div>
+    </div>
+  </section>
+
+  <section class="section band" id="servicios">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Servicios y precios</p>
+        <h2>Elige tu experiencia</h2>
+        <p class="lead">Precios en pesos colombianos. El domicilio dentro del área metropolitana tiene un recargo de $40.000.</p>
+      </div>
+      <div class="services">
+        <article class="service tilt">
+          <h3>Maquillaje social</h3>
+          <p class="service-meta">1 h 15 min · Grados, cumpleaños, cenas</p>
+          <ul><li>Preparación de piel</li><li>Pestañas en tira incluidas</li><li>Fijación de larga duración</li></ul>
+          <p class="price">$180.000 <small>COP</small></p>
+        </article>
+        <article class="service featured tilt">
+          <span class="badge">Más pedido</span>
+          <h3>Novia con prueba</h3>
+          <p class="service-meta">Prueba de 2 h + día de la boda</p>
+          <ul><li>Prueba de maquillaje previa</li><li>Pestañas pelo a pelo</li><li>Kit de retoque para la noche</li><li>Acompañamiento 2 h en la boda</li></ul>
+          <p class="price">$450.000 <small>COP</small></p>
+        </article>
+        <article class="service tilt">
+          <h3>Editorial y fotografía</h3>
+          <p class="service-meta">Por sesión de hasta 4 h</p>
+          <ul><li>Maquillaje HD para cámara</li><li>Hasta 3 cambios de look</li><li>Retoques en set</li></ul>
+          <p class="price">$300.000 <small>COP</small></p>
+        </article>
+        <article class="service tilt">
+          <h3>Madrina o mamá de la novia</h3>
+          <p class="service-meta">1 h · Mismo día de la boda</p>
+          <ul><li>Piel madura y luminosa</li><li>Pestañas en tira</li><li>Coordinado con el look de la novia</li></ul>
+          <p class="price">$200.000 <small>COP</small></p>
+        </article>
+        <article class="service tilt">
+          <h3>Maquillaje artístico</h3>
+          <p class="service-meta">1 h 30 min · Halloween, carnaval, teatro</p>
+          <ul><li>Diseño personalizado</li><li>Pedrería y glitter cosmético</li><li>Desmaquillante incluido</li></ul>
+          <p class="price">$220.000 <small>COP</small></p>
+        </article>
+        <article class="service tilt">
+          <h3>Curso de automaquillaje</h3>
+          <p class="service-meta">3 h · Clase personalizada</p>
+          <ul><li>Análisis de tu rostro</li><li>Lista de productos según tu piel</li><li>Guía impresa paso a paso</li></ul>
+          <p class="price">$250.000 <small>COP</small></p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="testimonios">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Testimonios</p>
+        <h2>Lo que dicen mis clientas</h2>
+      </div>
+      <div class="quotes">
+        <div class="quote-track" id="quoteTrack" tabindex="0" aria-label="Testimonios, desliza para ver más">
+          <figure class="quote">
+            <p class="stars" aria-label="5 de 5 estrellas">★★★★★</p>
+            <blockquote>Lloré en la ceremonia y el maquillaje quedó intacto. En las fotos parecía yo, pero descansada y radiante.</blockquote>
+            <footer><span class="avatar">C</span><div><strong>Camila Restrepo</strong><span>Novia · Llanogrande</span></div></footer>
+          </figure>
+          <figure class="quote">
+            <p class="stars" aria-label="5 de 5 estrellas">★★★★★</p>
+            <blockquote>Tengo piel sensible y nunca me había sentido tan cómoda con base. Me explicó cada producto que usó.</blockquote>
+            <footer><span class="avatar">L</span><div><strong>Laura Gómez</strong><span>Grado universitario</span></div></footer>
+          </figure>
+          <figure class="quote">
+            <p class="stars" aria-label="5 de 5 estrellas">★★★★★</p>
+            <blockquote>Trabajamos tres looks en una sola jornada para la campaña y cada cambio fue rápido y preciso.</blockquote>
+            <footer><span class="avatar">D</span><div><strong>Daniel Ospina</strong><span>Fotógrafo de moda</span></div></footer>
+          </figure>
+          <figure class="quote">
+            <p class="stars" aria-label="5 de 5 estrellas">★★★★★</p>
+            <blockquote>El curso me cambió la rutina. Ahora me maquillo en quince minutos y sé qué comprar.</blockquote>
+            <footer><span class="avatar">M</span><div><strong>María José Henao</strong><span>Curso de automaquillaje</span></div></footer>
+          </figure>
+        </div>
+        <div class="quote-ctrl">
+          <button class="round" type="button" id="prevQ" aria-label="Testimonio anterior">←</button>
+          <button class="round" type="button" id="nextQ" aria-label="Siguiente testimonio">→</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band" id="reservas">
+    <div class="wrap booking">
+      <div>
+        <p class="eyebrow">Reservas y contacto</p>
+        <h2>Reserva tu fecha</h2>
+        <p class="lead" style="margin-top:16px">Las fechas de boda se separan con un abono del 30%. Llena el formulario y se arma tu mensaje para enviarlo por WhatsApp.</p>
+        <ul class="contact-list">
+          <li><span>WhatsApp</span><strong>+57 300 123 4567</strong></li>
+          <li><span>Instagram</span><strong>@auroraglam.studio</strong></li>
+          <li><span>Estudio</span><strong>Cra. 43A #10-25, El Poblado, Medellín</strong></li>
+          <li><span>Horario</span><strong>Lunes a sábado, 6:00 a. m. – 7:00 p. m.</strong></li>
+        </ul>
+      </div>
+      <form class="card" id="bookForm" novalidate>
+        <div class="field">
+          <label for="nombre">Nombre</label>
+          <input id="nombre" name="nombre" autocomplete="name" placeholder="Tu nombre" required>
+          <span class="error" id="err-nombre"></span>
+        </div>
+        <div class="field">
+          <label for="servicio">Servicio</label>
+          <select id="servicio" name="servicio" required>
+            <option value="">Elige un servicio</option>
+            <option>Maquillaje social</option>
+            <option>Novia con prueba</option>
+            <option>Editorial y fotografía</option>
+            <option>Madrina o mamá de la novia</option>
+            <option>Maquillaje artístico</option>
+            <option>Curso de automaquillaje</option>
+          </select>
+          <span class="error" id="err-servicio"></span>
+        </div>
+        <div class="field">
+          <label for="fecha">Fecha del evento</label>
+          <input id="fecha" name="fecha" type="date" required>
+          <span class="error" id="err-fecha"></span>
+        </div>
+        <div class="field">
+          <label for="lugar">Lugar</label>
+          <select id="lugar" name="lugar">
+            <option>En el estudio</option>
+            <option>A domicilio</option>
+          </select>
+          <span class="error"></span>
+        </div>
+        <div class="field full">
+          <label for="mensaje">Cuéntame de tu look (opcional)</label>
+          <textarea id="mensaje" name="mensaje" placeholder="Hora del evento, tipo de piel, referencias que te gustan…"></textarea>
+        </div>
+        <div class="field full">
+          <button class="btn btn-primary" type="submit" style="justify-content:center">Preparar mensaje de WhatsApp</button>
+        </div>
+        <div class="result" id="result" hidden>
+          <strong>Tu mensaje está listo</strong>
+          <pre id="resultText"></pre>
+          <div class="result-actions">
+            <a class="btn btn-primary" id="waLink" href="#" target="_blank" rel="noopener">Abrir WhatsApp</a>
+            <button class="btn btn-ghost" type="button" id="copyBtn">Copiar mensaje</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <span>© 2026 Aurora Glam Studio · Medellín, Colombia</span>
+    <span>Nombres, precios y datos de contacto son de ejemplo.</span>
+  </div>
+</footer>
+
+<a class="wa-float" href="https://wa.me/573001234567" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .2-1.2c-.1-.1-.3-.2-.6-.3z"/></svg>
+</a>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+  "use strict";
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- Menú móvil ---------- */
+  var menuBtn = document.getElementById("menuBtn"), navLinks = document.getElementById("navLinks");
+  menuBtn.addEventListener("click", function(){
+    var open = navLinks.classList.toggle("open");
+    menuBtn.setAttribute("aria-expanded", open);
+  });
+  navLinks.addEventListener("click", function(e){
+    if (e.target.closest("a")) { navLinks.classList.remove("open"); menuBtn.setAttribute("aria-expanded", false); }
+  });
+
+  /* ---------- Rostros ilustrados (SVG) ---------- */
+  function face(o){
+    var eye = function(x, flip){
+      var s = flip ? -1 : 1;
+      return '<ellipse cx="'+x+'" cy="104" rx="15" ry="9" fill="'+o.shadow+'" opacity=".85"/>' +
+        (o.shadow2 ? '<ellipse cx="'+(x+s*6)+'" cy="103" rx="8" ry="7" fill="'+o.shadow2+'" opacity=".8"/>' : '') +
+        '<ellipse cx="'+x+'" cy="112" rx="9" ry="4.4" fill="#fff"/>' +
+        '<circle cx="'+x+'" cy="112" r="3.6" fill="#3b2418"/>' +
+        '<path d="M'+(x-11*s)+' 112 Q'+x+' 104 '+(x+10*s)+' 111 L'+(x+(o.wing||5)*s+10*s)+' 105" stroke="'+o.liner+'" stroke-width="'+(o.linerW||2)+'" fill="none" stroke-linecap="round"/>' +
+        '<path d="M'+(x-13*s)+' 92 Q'+x+' 86 '+(x+13*s)+' 91" stroke="'+o.brow+'" stroke-width="3" fill="none" stroke-linecap="round"/>';
+    };
+    return '<svg viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
+      '<ellipse cx="100" cy="110" rx="74" ry="92" fill="'+o.hair+'"/>' +
+      '<path d="M20 250 Q30 196 100 192 Q170 196 180 250Z" fill="'+o.cloth+'"/>' +
+      '<rect x="84" y="160" width="32" height="40" rx="14" fill="'+o.skinShade+'"/>' +
+      '<ellipse cx="100" cy="114" rx="52" ry="64" fill="'+o.skin+'"/>' +
+      '<path d="M46 108 Q46 44 100 40 Q154 44 154 108 Q144 66 100 64 Q60 66 46 108Z" fill="'+o.hair+'"/>' +
+      eye(78,false) + eye(122,true) +
+      '<circle cx="70" cy="134" r="11" fill="'+o.blush+'" opacity=".45"/><circle cx="130" cy="134" r="11" fill="'+o.blush+'" opacity=".45"/>' +
+      '<path d="M100 116 Q97 130 95 134 Q100 137 105 134" stroke="'+o.skinShade+'" stroke-width="2" fill="none" stroke-linecap="round"/>' +
+      '<path d="M85 150 Q93 144 100 147 Q107 144 115 150 Q100 154 85 150Z" fill="'+o.lip+'"/>' +
+      '<path d="M85 150 Q100 163 115 150 Q100 155 85 150Z" fill="'+o.lip+'" opacity=".88"/>' +
+      '<path d="M94 156 Q100 158 106 156" stroke="#fff" stroke-opacity=".45" stroke-width="1.4" fill="none"/>' +
+      (o.extra || '') + '</svg>';
+  }
+  var flowers = '<g fill="#fff"><circle cx="52" cy="70" r="6"/><circle cx="62" cy="58" r="5"/><circle cx="46" cy="84" r="4"/></g><g fill="#E3C17A"><circle cx="52" cy="70" r="2"/><circle cx="62" cy="58" r="1.8"/></g>';
+  var gems = '<g fill="#E3C17A"><circle cx="58" cy="98" r="2.4"/><circle cx="56" cy="108" r="1.8"/><circle cx="142" cy="98" r="2.4"/><circle cx="144" cy="108" r="1.8"/><circle cx="100" cy="84" r="2.6"/></g><g fill="#fff" opacity=".8"><circle cx="62" cy="90" r="1.4"/><circle cx="138" cy="90" r="1.4"/></g>';
+  var graphic = '<path d="M60 100 L44 92 M140 100 L156 92" stroke="#111" stroke-width="3" stroke-linecap="round"/>';
+  var stars = '<g fill="#B48CF0"><path d="M150 70l3 7 7 3-7 3-3 7-3-7-7-3 7-3z"/><path d="M48 150l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/></g>';
+
+  var looks = [
+    {cat:"novias", name:"Novia natural luminosa", shades:"Base satinada 2N · sombra champaña · labial Rosa Antiguo", sw:["#E8C4A8","#E9CFA9","#C9707E"], bg:["#F6DCD8","#EBC6BF"],
+      f:{skin:"#EDC6A8",skinShade:"#D9A988",hair:"#5B3A29",cloth:"#FFFFFF",shadow:"#E5C49A",liner:"#4A2C22",brow:"#5B3A29",blush:"#E58F96",lip:"#C9707E",extra:flowers}},
+    {cat:"social", name:"Smokey vino para grado", shades:"Sombra vino 34 · delineado café · labial nude 102", sw:["#7A2E3D","#3B2418","#C79483"], bg:["#E7C8C8","#C99AA2"],
+      f:{skin:"#D8A27E",skinShade:"#BF8763",hair:"#2C1A14",cloth:"#7A2E3D",shadow:"#7A2E3D",shadow2:"#4A1E28",liner:"#2C1A14",linerW:2.6,wing:7,brow:"#2C1A14",blush:"#C9707E",lip:"#C79483"}},
+    {cat:"editorial", name:"Editorial delineado gráfico", shades:"Piel mate · delineador negro líquido · labio transparente", sw:["#F0D2BC","#111111","#E5A3A0"], bg:["#EDE4E2","#CFC2C4"],
+      f:{skin:"#F0D2BC",skinShade:"#D8B39A",hair:"#1A1214",cloth:"#1A1214",shadow:"#F0D2BC",liner:"#111",linerW:3.2,wing:14,brow:"#1A1214",blush:"#E5A3A0",lip:"#E5A3A0",extra:graphic}},
+    {cat:"artistico", name:"Galaxia con pedrería", shades:"Sombras lila y azul · pedrería dorada · glitter holográfico", sw:["#B48CF0","#5B6FD8","#E3C17A"], bg:["#DCCDF2","#B9B6E8"],
+      f:{skin:"#E2B390",skinShade:"#C9967A",hair:"#3A2A5C",cloth:"#3A2A5C",shadow:"#8E6FE0",shadow2:"#5B6FD8",liner:"#2A1F4A",brow:"#3A2A5C",blush:"#C58BD8",lip:"#9C4FB0",extra:gems+stars}},
+    {cat:"novias", name:"Novia glam dorado", shades:"Base HD 3W · sombra oro 07 · labial terracota rosado", sw:["#C68E6A","#D4A74F","#B9575B"], bg:["#F2D9C4","#E2B99A"],
+      f:{skin:"#C68E6A",skinShade:"#A9734F",hair:"#2A1912",cloth:"#FFFFFF",shadow:"#D4A74F",shadow2:"#B07B3A",liner:"#2A1912",linerW:2.4,wing:6,brow:"#2A1912",blush:"#C9705E",lip:"#B9575B",extra:flowers}},
+    {cat:"social", name:"Rosa durazno de día", shades:"Rubor durazno · sombra rosa 12 · gloss coral", sw:["#F2A88E","#E9A0AA","#EE7E6A"], bg:["#FBE0D6","#F4C3B6"],
+      f:{skin:"#F1CDB3",skinShade:"#DCAE90",hair:"#8A5A3A",cloth:"#F2A88E",shadow:"#E9A0AA",liner:"#5A3A2A",linerW:1.6,wing:3,brow:"#8A5A3A",blush:"#F2A88E",lip:"#EE7E6A"}},
+    {cat:"editorial", name:"Labio rojo clásico", shades:"Piel porcelana · máscara volumen · labial Rojo Cereza 999", sw:["#F4DCCB","#1B1B1B","#B3122E"], bg:["#F3DCDC","#DFB4B6"],
+      f:{skin:"#F4DCCB",skinShade:"#DDBBA4",hair:"#3A1E14",cloth:"#1B1B1B",shadow:"#E6C9B8",liner:"#111",linerW:2.6,wing:9,brow:"#3A1E14",blush:"#E09A9A",lip:"#B3122E"}},
+    {cat:"artistico", name:"Catrina floral", shades:"Base blanca de agua · delineado negro · flores en acuarela", sw:["#FAF5F2","#111111","#D9466B"], bg:["#F6D2DC","#E4A9BC"],
+      f:{skin:"#F7F1EE",skinShade:"#DCCFCB",hair:"#1A1214",cloth:"#D9466B",shadow:"#1A1214",liner:"#1A1214",linerW:2.6,wing:4,brow:"#1A1214",blush:"#D9466B",lip:"#1A1214",
+        extra:'<g fill="#D9466B"><circle cx="64" cy="140" r="5"/><circle cx="136" cy="140" r="5"/></g><g fill="#E3C17A"><circle cx="64" cy="140" r="1.8"/><circle cx="136" cy="140" r="1.8"/></g><g fill="#D9466B"><circle cx="66" cy="60" r="8"/><circle cx="80" cy="50" r="7"/><circle cx="134" cy="60" r="8"/></g><g fill="#E3C17A"><circle cx="66" cy="60" r="3"/><circle cx="80" cy="50" r="2.5"/><circle cx="134" cy="60" r="3"/></g>'}}
+  ];
+  var catName = {novias:"Novias",social:"Social",editorial:"Editorial",artistico:"Artístico"};
+  var gallery = document.getElementById("gallery");
+  gallery.innerHTML = looks.map(function(l){
+    /* Para usar fotos reales reemplaza el <div class="look-art"> por: <img src="tu-foto.jpg" alt="..."> */
+    return '<article class="look tilt" data-cat="'+l.cat+'">' +
+      '<div class="look-art" style="background:linear-gradient(160deg,'+l.bg[0]+','+l.bg[1]+')">'+face(l.f)+'</div>' +
+      '<div class="look-body"><span class="look-cat">'+catName[l.cat]+'</span><h3>'+l.name+'</h3>' +
+      '<p class="look-shades">'+l.shades+'</p><div class="swatches">'+l.sw.map(function(c){return '<i style="background:'+c+'" title="'+c+'"></i>';}).join("")+'</div></div></article>';
+  }).join("");
+
+  document.getElementById("portrait").insertAdjacentHTML("afterbegin", face({skin:"#E6B795",skinShade:"#CC9A78",hair:"#3B2219",cloth:"#2E1C22",shadow:"#D99A8E",shadow2:"#B9707A",liner:"#2A1812",linerW:2.4,wing:6,brow:"#3B2219",blush:"#E08A8E",lip:"#B9576A"}));
+
+  var filters = document.querySelectorAll(".filter");
+  filters.forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var f = btn.dataset.filter;
+      filters.forEach(function(b){ b.setAttribute("aria-pressed", b === btn); });
+      gallery.querySelectorAll(".look").forEach(function(card){
+        card.hidden = !(f === "todos" || card.dataset.cat === f);
+      });
+    });
+  });
+
+  /* ---------- Efecto tilt 3D ---------- */
+  if (!reduceMotion) {
+    document.querySelectorAll(".tilt").forEach(function(el){
+      el.addEventListener("pointermove", function(e){
+        if (e.pointerType !== "mouse") return;
+        var r = el.getBoundingClientRect();
+        var x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+        el.style.setProperty("--rx", (-y * 10).toFixed(2) + "deg");
+        el.style.setProperty("--ry", (x * 12).toFixed(2) + "deg");
+        el.style.setProperty("--mx", ((x + .5) * 100).toFixed(1) + "%");
+        el.style.setProperty("--my", ((y + .5) * 100).toFixed(1) + "%");
+        el.style.setProperty("--sheen", 1);
+      });
+      el.addEventListener("pointerleave", function(){
+        el.style.setProperty("--rx", "0deg"); el.style.setProperty("--ry", "0deg"); el.style.setProperty("--sheen", 0);
+      });
+    });
+  }
+
+  /* ---------- Carrusel de testimonios ---------- */
+  var track = document.getElementById("quoteTrack");
+  function step(dir){
+    var card = track.querySelector(".quote");
+    var w = card.getBoundingClientRect().width + 22;
+    var atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+    if (dir > 0 && atEnd) track.scrollTo({left:0, behavior: reduceMotion ? "auto" : "smooth"});
+    else track.scrollBy({left: dir * w, behavior: reduceMotion ? "auto" : "smooth"});
+  }
+  document.getElementById("prevQ").addEventListener("click", function(){ step(-1); });
+  document.getElementById("nextQ").addEventListener("click", function(){ step(1); });
+  var paused = false;
+  ["pointerenter","focusin"].forEach(function(ev){ track.addEventListener(ev, function(){ paused = true; }); });
+  ["pointerleave","focusout"].forEach(function(ev){ track.addEventListener(ev, function(){ paused = false; }); });
+  if (!reduceMotion) setInterval(function(){ if (!paused && !document.hidden) step(1); }, 6500);
+
+  /* ---------- Formulario de reservas ---------- */
+  var form = document.getElementById("bookForm");
+  var fecha = document.getElementById("fecha");
+  var today = new Date(); today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
+  fecha.min = today.toISOString().slice(0,10);
+  var waNumber = "573001234567";
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    var ok = true;
+    function check(id, msg, valid){
+      var err = document.getElementById("err-" + id);
+      err.textContent = valid ? "" : msg;
+      if (!valid && ok) document.getElementById(id).focus();
+      ok = ok && valid;
+    }
+    var nombre = form.nombre.value.trim(), servicio = form.servicio.value, f = fecha.value;
+    check("nombre", "Escribe tu nombre para saber a quién responder.", nombre.length > 1);
+    check("servicio", "Elige el servicio que te interesa.", !!servicio);
+    check("fecha", f && f < fecha.min ? "La fecha ya pasó. Elige una fecha desde hoy." : "Elige la fecha de tu evento.", !!f && f >= fecha.min);
+    if (!ok) return;
+    var fechaTxt = new Date(f + "T12:00:00").toLocaleDateString("es-CO", {weekday:"long", day:"numeric", month:"long", year:"numeric"});
+    var text = "¡Hola Valentina! Soy " + nombre + ".\nQuiero reservar: " + servicio + "\nFecha: " + fechaTxt + "\nLugar: " + form.lugar.value +
+      (form.mensaje.value.trim() ? "\nDetalles: " + form.mensaje.value.trim() : "");
+    document.getElementById("resultText").textContent = text;
+    document.getElementById("waLink").href = "https://wa.me/" + waNumber + "?text=" + encodeURIComponent(text);
+    var res = document.getElementById("result");
+    res.hidden = false;
+    res.scrollIntoView({block:"nearest", behavior: reduceMotion ? "auto" : "smooth"});
+  });
+  document.getElementById("copyBtn").addEventListener("click", function(){
+    var btn = this, txt = document.getElementById("resultText");
+    function selectText(){ var r = document.createRange(); r.selectNodeContents(txt); var s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = "Texto seleccionado, cópialo"; }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(txt.textContent).then(function(){ btn.textContent = "Mensaje copiado"; }, selectText);
+    } else selectText();
+  });
+
+  /* ---------- Escena 3D de productos ---------- */
+  var stage = document.getElementById("stage"), canvas = document.getElementById("scene");
+  if (!window.THREE) { stage.classList.add("no-webgl"); return; }
+  var renderer;
+  try { renderer = new THREE.WebGLRenderer({canvas: canvas, antialias: true, alpha: true}); }
+  catch (err) { stage.classList.add("no-webgl"); return; }
+  var T = THREE;
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.outputEncoding = T.sRGBEncoding;
+  renderer.toneMapping = T.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = .95;
+
+  var scene = new T.Scene();
+  var camera = new T.PerspectiveCamera(35, 1, .1, 100);
+  camera.position.set(0, .2, 9.5);
+
+  // Entorno de reflejos generado en un canvas (estudio con softboxes)
+  var ec = document.createElement("canvas"); ec.width = 512; ec.height = 256;
+  var g = ec.getContext("2d");
+  var grd = g.createLinearGradient(0,0,0,256);
+  grd.addColorStop(0,"#fff7f2"); grd.addColorStop(.45,"#f2c6c2"); grd.addColorStop(.7,"#9a6a70"); grd.addColorStop(1,"#3a2228");
+  g.fillStyle = grd; g.fillRect(0,0,512,256);
+  g.fillStyle = "rgba(255,255,255,.95)"; g.fillRect(40,46,110,46); g.fillRect(300,30,150,36);
+  g.fillStyle = "rgba(255,226,190,.9)"; g.fillRect(190,120,90,26);
+  var envTex = new T.CanvasTexture(ec);
+  envTex.mapping = T.EquirectangularReflectionMapping; envTex.encoding = T.sRGBEncoding;
+  var pmrem = new T.PMREMGenerator(renderer);
+  scene.environment = pmrem.fromEquirectangular(envTex).texture;
+
+  scene.add(new T.HemisphereLight(0xfff1ec, 0x6b3a44, .6));
+  var key = new T.DirectionalLight(0xfff0e0, 1.4); key.position.set(4, 6, 6); scene.add(key);
+  var rim = new T.PointLight(0xff9fb3, 1.2, 20); rim.position.set(-5, -2, 3); scene.add(rim);
+
+  var gold = new T.MeshStandardMaterial({color:0xd8ac58, metalness:1, roughness:.22});
+  var roseLacquer = new T.MeshPhysicalMaterial({color:0xd98e9b, roughness:.35, metalness:.1, clearcoat:1, clearcoatRoughness:.12});
+  var lipMat = new T.MeshPhysicalMaterial({color:0x7e1430, roughness:.32, clearcoat:.7, clearcoatRoughness:.2});
+  var powder = new T.MeshStandardMaterial({color:0xecb3a8, roughness:.95});
+  var mirror = new T.MeshStandardMaterial({color:0xffffff, metalness:1, roughness:.04});
+  var glass = new T.MeshPhysicalMaterial({color:0xfff5f2, roughness:.05, metalness:0, transparent:true, opacity:.22, clearcoat:1, depthWrite:false});
+  var liquid = new T.MeshStandardMaterial({color:0xb9805c, roughness:.45});
+  var bristle = new T.MeshStandardMaterial({color:0x3f2523, roughness:.85});
+  var bristleTip = new T.MeshStandardMaterial({color:0xe8b7ad, roughness:.9});
+
+  function lathe(points, segs){ return new T.LatheGeometry(points.map(function(p){ return new T.Vector2(p[0], p[1]); }), segs || 64); }
+
+  function makeLipstick(){
+    var grp = new T.Group();
+    var base = new T.Mesh(new T.CylinderGeometry(.34,.34,1.1,64), roseLacquer); base.position.y = -.55; grp.add(base);
+    var band = new T.Mesh(new T.CylinderGeometry(.36,.36,.08,64), gold); band.position.y = -.02; grp.add(band);
+    var sleeve = new T.Mesh(new T.CylinderGeometry(.29,.29,.52,64), gold); sleeve.position.y = .26; grp.add(sleeve);
+    var bg = new T.CylinderGeometry(.23,.23,.7,64,6);
+    var p = bg.attributes.position;
+    for (var i = 0; i < p.count; i++) { var y = p.getY(i); if (y > .34) p.setY(i, y + p.getX(i) * .5 + .06); }
+    bg.computeVertexNormals();
+    var bullet = new T.Mesh(bg, lipMat); bullet.position.y = .78; grp.add(bullet);
+    return grp;
+  }
+  function makeCompact(){
+    var grp = new T.Group();
+    grp.add(new T.Mesh(new T.CylinderGeometry(.82,.82,.16,72), gold));
+    var pan = new T.Mesh(new T.CylinderGeometry(.68,.68,.04,72), powder); pan.position.y = .09; grp.add(pan);
+    var emb = new T.Mesh(new T.TorusGeometry(.42,.014,12,72), gold); emb.rotation.x = Math.PI/2; emb.position.y = .115; grp.add(emb);
+    var hinge = new T.Group(); hinge.position.set(0,.1,-.82); grp.add(hinge);
+    var lid = new T.Mesh(new T.CylinderGeometry(.82,.82,.12,72), roseLacquer); lid.position.set(0,0,.82); hinge.add(lid);
+    var rimLid = new T.Mesh(new T.TorusGeometry(.82,.02,12,72), gold); rimLid.rotation.x = Math.PI/2; rimLid.position.set(0,.06,.82); hinge.add(rimLid);
+    var m = new T.Mesh(new T.CylinderGeometry(.7,.7,.01,72), mirror); m.position.set(0,-.066,.82); hinge.add(m);
+    hinge.rotation.x = -1.95;
+    grp.rotation.x = .55;
+    return grp;
+  }
+  function makeBottle(){
+    var grp = new T.Group();
+    var body = new T.Mesh(lathe([[0,-.9],[.5,-.9],[.56,-.84],[.56,.42],[.5,.54],[.2,.64],[.2,.8],[0,.8]]), glass);
+    body.renderOrder = 2; grp.add(body);
+    var liq = new T.Mesh(new T.CylinderGeometry(.5,.5,1.05,64), liquid); liq.position.y = -.33; grp.add(liq);
+    var cap = new T.Mesh(new T.CylinderGeometry(.25,.25,.58,64), gold); cap.position.y = 1.08; grp.add(cap);
+    var capTop = new T.Mesh(new T.CylinderGeometry(.18,.25,.08,64), gold); capTop.position.y = 1.41; grp.add(capTop);
+    return grp;
+  }
+  function makeBrush(){
+    var grp = new T.Group();
+    grp.add(new T.Mesh(lathe([[0,-1.7],[.05,-1.7],[.07,-1.2],[.12,-.15],[.11,0],[0,0]]), roseLacquer));
+    var fer = new T.Mesh(new T.CylinderGeometry(.13,.11,.46,48), gold); fer.position.y = .22; grp.add(fer);
+    grp.add(new T.Mesh(lathe([[0,.44],[.12,.44],[.2,.72],[.21,.86],[0,.86]]), bristle));
+    grp.add(new T.Mesh(lathe([[0,.86],[.21,.86],[.18,1.02],[.1,1.14],[0,1.17]]), bristleTip));
+    return grp;
+  }
+
+  var root = new T.Group(); scene.add(root);
+  var items = [
+    {o: makeLipstick(), p:[-1.75, .35, 0], r:[0, 0, .22], ph:0},
+    {o: makeCompact(),  p:[1.45, -1.05, .4], r:[0, -.4, 0], ph:1.6},
+    {o: makeBottle(),   p:[1.35, 1.25, -1.1], r:[0, 0, -.15], ph:3.1},
+    {o: makeBrush(),    p:[-.55, -1.25, 1.1], r:[0, 0, -1.05], ph:4.4}
+  ];
+  items.forEach(function(it){
+    it.o.position.set(it.p[0], it.p[1], it.p[2]);
+    it.o.rotation.set(it.r[0], it.r[1], it.r[2]);
+    root.add(it.o);
+  });
+
+  // Brillos dorados
+  var N = 140, pos = new Float32Array(N * 3);
+  for (var k = 0; k < N; k++) {
+    var rr = 2 + Math.random() * 2.2, th = Math.random() * Math.PI * 2, ph2 = Math.acos(2 * Math.random() - 1);
+    pos[k*3] = rr * Math.sin(ph2) * Math.cos(th); pos[k*3+1] = rr * Math.cos(ph2) * .8; pos[k*3+2] = rr * Math.sin(ph2) * Math.sin(th) * .6;
+  }
+  var pg = new T.BufferGeometry(); pg.setAttribute("position", new T.BufferAttribute(pos, 3));
+  var sparkles = new T.Points(pg, new T.PointsMaterial({color:0xe9c77f, size:.045, transparent:true, opacity:.85, depthWrite:false}));
+  root.add(sparkles);
+
+  // Interacción: arrastrar, mouse y scroll
+  var target = {x:0, y:0}, drag = {on:false, x:0, y:0, ry:0, rx:0};
+  stage.addEventListener("pointerdown", function(e){ drag.on = true; drag.x = e.clientX; drag.y = e.clientY; stage.setPointerCapture(e.pointerId); });
+  stage.addEventListener("pointerup", function(){ drag.on = false; });
+  stage.addEventListener("pointercancel", function(){ drag.on = false; });
+  stage.addEventListener("pointermove", function(e){
+    var r = stage.getBoundingClientRect();
+    target.x = ((e.clientY - r.top) / r.height - .5) * .35;
+    target.y = ((e.clientX - r.left) / r.width - .5) * .6;
+    if (drag.on) {
+      drag.ry += (e.clientX - drag.x) * .01; drag.rx += (e.clientY - drag.y) * .005;
+      drag.rx = Math.max(-.6, Math.min(.6, drag.rx));
+      drag.x = e.clientX; drag.y = e.clientY;
+      if (reduceMotion) render(0);
+    }
+  });
+  stage.addEventListener("pointerleave", function(){ target.x = 0; target.y = 0; });
+
+  function resize(){
+    var w = stage.clientWidth, h = stage.clientHeight;
+    if (!w || !h) return;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.position.z = camera.aspect < 1 ? 9.5 / camera.aspect * .85 : 9.5;
+    camera.updateProjectionMatrix();
+    render(lastT);
+  }
+  var lastT = 0, cur = {x:0, y:0};
+  function render(t){
+    var s = t / 1000;
+    var scrollSpin = (window.scrollY || 0) * .0025;
+    var ease = reduceMotion ? 1 : .06;
+    cur.x += (target.x + drag.rx - cur.x) * ease;
+    cur.y += (target.y + drag.ry + scrollSpin - cur.y) * ease;
+    root.rotation.x = cur.x; root.rotation.y = cur.y;
+    if (!reduceMotion) {
+      items.forEach(function(it, i){
+        it.o.position.y = it.p[1] + Math.sin(s * .9 + it.ph) * .12;
+        it.o.rotation.y = it.r[1] + s * (i % 2 ? .35 : .25);
+      });
+      sparkles.rotation.y = s * .05;
+    }
+    renderer.render(scene, camera);
+  }
+  var visible = true;
+  new IntersectionObserver(function(es){ visible = es[0].isIntersecting; }).observe(stage);
+  function loop(t){
+    lastT = t;
+    if (visible && !document.hidden) render(t);
+    requestAnimationFrame(loop);
+  }
+  if (window.ResizeObserver) new ResizeObserver(resize).observe(stage); else window.addEventListener("resize", resize);
+  resize();
+  if (reduceMotion) {
+    cur.x = target.x; cur.y = target.y;
+    render(0);
+    window.addEventListener("scroll", function(){ render(0); }, {passive:true});
+  } else requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
